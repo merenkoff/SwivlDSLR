@@ -101,26 +101,40 @@
 
 - (NSString *)generateScriptForUSB
 {
-    NSInteger timeBtwPictures = self.timelapseSettings.timeBetweenPictures * 1000;
-    NSInteger stepSize = (self.timelapseSettings.stepSize / 0.11) * 4;
-    NSString *direction = self.timelapseSettings.clockwiseDirection ? @"" : @"%";
-    NSInteger speed = 2000; //MAX
 
-    NSString *script = [NSString stringWithFormat:
-                        @"1:%lx, 1M %lx, 2M T2L+9M F(           \
-                        2:0, %lx, %lx%@, 5, 0, AR               \
-                        3:AL3=                                  \
-                        4:T9L-4< T2L+9M F( 1L1-, 5= 1M2@        \
-                        5:.                                     \
-                        F:FM                                    \
-                        D:3, 0, B9128P2019?D=2001-E#3, A9129P   \
-                        E:FL)\0",
-                        
-                        (long)self.timelapseSettings.stepCount,
-                        (long)timeBtwPictures,
-                        (long)speed,
-                        (long)stepSize,
-                        direction];
+//    NSInteger timeBtwPictures = self.timelapseSettings.timeBetweenPictures * 1000;
+//    NSInteger stepSize = (self.timelapseSettings.stepSize / 0.11) * 4;
+//    NSString *direction = self.timelapseSettings.clockwiseDirection ? @"" : @"%";
+//    NSInteger speed = 2000; //MAX
+//
+//    NSString *script = [NSString stringWithFormat:
+//                        @"1:%lx, 1M %lx, 2M T2L+9M F(           \
+//                        2:0, %lx, %lx%@, 5, 0, AR               \
+//                        3:AL3=                                  \
+//                        4:T9L-4< T2L+9M F( 1L1-, 5= 1M2@        \
+//                        5:.                                     \
+//                        ;PTP shutter                            \
+//                        F:FM                                    \
+//                        D:3, 0, B9128P2019?D=2001-E#3, A9129P   \
+//                        E:FL)\0",
+//                        
+//                        (long)self.timelapseSettings.stepCount,
+//                        (long)timeBtwPictures,
+//                        (long)speed,
+//                        (long)stepSize,
+//                        direction];
+    
+    NSString *script =  @"                                  \
+                        1:3,1M 2710,2M T2L+9M F(            \
+                        2:2710,320,7D0,5,0,AR               \
+                        3:AL3=                              \
+                        4:T9L-4< T2L+9M F( 1L1-,5= 1M2@     \
+                        5:.                                 \
+                        ;PTP shutter                        \
+                        F:FM                                \
+                        D:3,0,B9128P2019?D=2001-E#3,A9129P  \
+                        E:FL)\0";
+    
     return script;
 }
 
